@@ -39,7 +39,7 @@ jobs:
             -x ".git/*" "dist/*" "backups/*" "node_modules/*" "*.zip"
           ls -lh dist
 
-      - name: Extract release notes from CHANGELOG
+      - name: Extract release notes from English changelog
         shell: bash
         run: |
           set -euo pipefail
@@ -48,11 +48,11 @@ jobs:
             $0 ~ "^## \\[" ver "\\]" { flag=1; next }
             flag && /^## \[/ { exit }
             flag { print }
-          ' CHANGELOG.md > release-notes.md
+          ' CHANGELOG.en.md > release-notes.md
           if [ ! -s release-notes.md ]; then
             echo "Release v$VERSION" > release-notes.md
           fi
-          { echo "## تحميل وتحديث"; echo ""; echo "نزّل ملف ZIP من الأسفل، أو شغّل \`update.bat\` داخل مجلد التطبيق."; echo ""; echo "**مهم:** اعمل نسخة احتياطية JSON من الإعدادات الأول. البيانات نفسها (IndexedDB) مش بتتأثر بتحديث الملفات."; echo ""; echo "---"; echo ""; cat release-notes.md; } > release-notes-final.md
+          { echo "## Download and update"; echo ""; echo "Download the ZIP below, or run \`update.bat\` inside the app folder."; echo ""; echo "**Important:** Export a JSON backup from Settings first. Your data (IndexedDB) is not affected by updating app files."; echo ""; echo "---"; echo ""; cat release-notes.md; } > release-notes-final.md
           cat release-notes-final.md
 
       - name: Create GitHub Release

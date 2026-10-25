@@ -1,51 +1,51 @@
-# مغسلة سيارات — Carwash POS
+# Carwash POS
 
-نظام كاشير عربي كامل لمغسلة سيارات، يعمل محليًا على Windows أو أي جهاز يدعم Node.js/Python ومتصفح حديث. لا يحتاج تسجيلًا سحابيًا ولا اتصالًا دائمًا بالإنترنت.
+A complete Arabic cashier system for a car wash. It runs locally on Windows or on any device with Node.js/Python and a modern browser. No cloud sign-up and no permanent internet connection are required.
 
-البيانات تُحفظ في IndexedDB على نفس الجهاز، وتظل موجودة بعد إغلاق المتصفح. لا تعتمد على مسح بيانات المتصفح أو تغيير عنوان التشغيل؛ فقد يؤدي ذلك إلى فقدان الوصول إلى قاعدة البيانات القديمة.
+Data is stored in IndexedDB on the same device and remains available after closing the browser. Do not clear browser data or change the app origin; doing so may make the existing database inaccessible.
 
-## المزايا
+## Features
 
-- كاشير سريع بلمس الشاشة: تصنيفات، خدمات، أحجام، سلة، خصم، دفع نقدي/Visa/آجل.
-- تسجيل لوحة السيارة واقتراح بيانات آخر زيارة، مع تحقق من رقم هاتف مصري.
-- أسعار اختيارية بالكامل: يمكن تعطيل التسعير أو تركه فارغًا، وتسجيل الخدمة دون مبلغ.
-- فواتير بالبحث والفلترة، إعادة طباعة، إلغاء مع سبب، ورسالة WhatsApp للعميل.
-- تقارير يومية وفترات مخصصة: إيرادات، خدمات، طرق دفع، عمال، كاشير، مصروفات، وصافي.
-- إدارة العملاء والآجل وكشف حساب وتسجيل دفعات.
-- مصروفات بتصنيفات وملخصات وتصدير CSV.
-- طباعة حرارية 58/80 مم من المتصفح، وQR للفاتورة، ودعم ESC/POS عبر Web Serial أو Web Bluetooth.
-- إشعارات Telegram مع Outbox وإعادة محاولة، واختيار مستوى الخصوصية.
-- نسخ احتياطي واستعادة JSON، وتذكير يومي، وتنزيل نسخة أمان قبل الاستعادة.
-- مستخدمون بصلاحيات مدير/كاشير، PIN مشفر بـ PBKDF2، وسجل تدقيق.
-- فحص تحديثات GitHub وفتح ملاحظات الإصدار.
-- واجهة عربية RTL، وضع ليلي، PWA، وService Worker على localhost.
+- Fast touch cashier: categories (cars, tuk-tuk, motorcycle), a large service grid, cart, discounts, and cash/Visa/credit payments.
+- License plate entry with previous-visit suggestions and Egyptian phone-number validation.
+- Fully optional pricing: services can be recorded with no amount, and invoices/reports work without prices.
+- Invoices with search and filtering, reprinting, cancellation with a reason, and a manual WhatsApp link.
+- Daily and custom-range reports: revenue, services, payment methods, workers, cashier, expenses, and net.
+- Customers, credit balances, account statements, and payment recording.
+- Expenses with categories, summaries, and CSV export.
+- Browser-based 58/80 mm thermal printing, invoice QR codes, and optional ESC/POS over Web Serial or Web Bluetooth.
+- Telegram notifications with an outbox, automatic retries, and selectable privacy levels.
+- JSON backup and restore, daily reminders, and a safety snapshot before restoring.
+- Manager/cashier users, PBKDF2-hashed PINs, and an audit log.
+- GitHub update checks and release notes.
+- Arabic RTL interface, dark mode, PWA support, and a localhost-only Service Worker.
 
-## التشغيل السريع
+## Quick Start
 
-### المتطلبات
+### Requirements
 
 - Windows 10/11.
-- Node.js 18 أو أحدث (يُفضّل 20+)، أو Python 3.10+ كبديل.
-- Chrome أو Edge حديث. Firefox لا يدعم Web Serial/Bluetooth، وSafari محدود.
+- Node.js 18 or newer (20+ recommended), or Python 3.10+ as an alternative.
+- A recent version of Chrome or Edge. Firefox does not support Web Serial/Bluetooth, and Safari has limited support.
 
 ### Windows
 
-1. افتح مجلد البرنامج.
-2. شغّل `start.bat`.
-3. سيبدأ خادم محلي ويفتح:
+1. Open the application folder.
+2. Run `start.bat`.
+3. A local server starts and opens:
 
 ```text
 http://localhost:8080
 ```
 
-4. سجّل الدخول بالحساب الافتراضي:
+4. Sign in with the default accounts:
 
-| الحساب | PIN |
+| Account | PIN |
 |---|---|
-| المدير | `1234` |
-| الكاشير | `1111` |
+| Manager | `1234` |
+| Cashier | `1111` |
 
-غيّر هذين الرمزين فورًا من **الإعدادات → المستخدمون**.
+Change both PINs immediately from **Settings → Users**.
 
 ### macOS / Linux
 
@@ -54,153 +54,153 @@ chmod +x start.sh
 ./start.sh
 ```
 
-أو شغّل الخادم مباشرة:
+Or start the server directly:
 
 ```bash
 node server.js
 ```
 
-لا تفتح `index.html` بالنقر المزدوج. المتصفح يمنع تحميل ES Modules عبر `file://`، وقد تظهر شاشة تحذير بدلًا من البرنامج.
+Do not open `index.html` by double-clicking it. Browsers block ES module loading over `file://`, so a warning page may appear instead of the application.
 
-## الاستخدام اليومي
+## Daily Use
 
-- **الكاشير**: اختر التصنيف ثم الخدمة. إذا كان تسعير الأحجام مفعّلًا ستظهر نافذة اختيار الحجم. أضف الخدمات للسلة ثم ادفع واطبع.
-- **لوحة السيارة**: اكتب الحروف والأرقام. قد يقترح البرنامج بيانات العميل من زيارة سابقة.
-- **الخصم**: مبلغ ثابت أو نسبة، ويظهر تحذير عند تجاوز حد الخصم الكبير إذا كانت الإشعارات مفعلة.
-- **الآجل**: يتطلب رقم هاتف صحيحًا، ويُضاف المبلغ إلى رصيد العميل.
-- **الفواتير**: يمكن للمدير إلغاء فاتورة مع سبب. الإلغاء يعيد رصيد الآجل ولا يحذف الفاتورة من السجل.
-- **الوردية**: افتح وردية من التقارير، ثم أغلقها لمراجعة مبيعات الفترة وإرسال ملخص عبر Telegram.
-- **المصروفات**: تُدخل بالتاريخ والتصنيف والمبلغ، وتظهر في صافي الربح.
+- **Cashier**: choose a category, then a service. If size-based pricing is enabled, a size picker appears. Add services to the cart, then pay and print.
+- **License plate**: enter the letters and numbers. The app may suggest customer details from a previous visit.
+- **Discount**: use a fixed amount or a percentage. When notifications are enabled, a warning is shown if the discount exceeds the large-discount threshold.
+- **Credit**: requires a valid phone number and adds the amount to the customer's balance.
+- **Invoices**: managers can cancel an invoice with a reason. Cancellation restores the credit balance and keeps the invoice in the history.
+- **Shift**: open a shift from Reports, then close it to review the period's sales and send a Telegram summary.
+- **Expenses**: enter the date, category, and amount; expenses are included in net profit.
 
-الأسعار يمكن تركها فارغة. عند تعطيل **تفعيل الأسعار** من إعدادات الأصناف يعمل الكاشير كسجل للخدمات دون مبالغ، وتختفي الإجماليات من الفاتورة والإشعارات.
+Prices can be left blank. When **Enable pricing** is turned off in service settings, the cashier works as a service log without amounts, and totals are hidden from invoices and notifications.
 
-## الطباعة
+## Printing
 
-### طباعة المتصفح
+### Browser Printing
 
-- الورق الافتراضي 80 مم، ويمكن ضبط 58 مم من الإعدادات.
-- في نافذة الطباعة اختر الطابعة، واضبط الهوامش على "بدون" وألغِ الرؤوس والتذييلات.
-- استخدم "طباعة تجريبية" من **الإعدادات → الطباعة**.
-- QR الفاتورة يُطبع عند تفعيله.
+- The default paper width is 80 mm; 58 mm can be selected in Settings.
+- In the print dialog, choose the printer, set margins to "None", and disable headers and footers.
+- Use **Test print** from **Settings → Printing**.
+- The invoice QR code is printed when enabled.
 
-### ESC/POS مباشر
+### Direct ESC/POS
 
-- **USB / Serial**: متاح في Chrome/Edge على Windows. اختر منفذ الطابعة، واضبط سرعة الاتصال المناسبة، غالبًا `9600`.
-- **Bluetooth**: متاح في المتصفحات الداعمة. يجب أن تكون الطابعة في وضع الاقتران.
-- الاتصال لا يُحفظ بعد إغلاق المتصفح، وقد يحتاج إعادة توصيل.
-- راجع دليل الطابعة لمعرفة سرعة Serial الصحيحة.
+- **USB / Serial**: supported in Chrome/Edge on Windows. Select the printer port and set the matching baud rate, usually `9600`.
+- **Bluetooth**: supported in compatible browsers. The printer must be in pairing mode.
+- The connection is not retained after closing the browser and may need to be re-established.
+- Check the printer manual for the correct serial baud rate.
 
-## الإشعارات على Telegram
+## Telegram Notifications
 
-الإعداد الكامل خطوة بخطوة موجود في [`docs/telegram-setup-ar.md`](docs/telegram-setup-ar.md)، وكود Cloudflare Worker في [`docs/cloudflare-worker.js`](docs/cloudflare-worker.js).
+The complete Arabic step-by-step guide is in [`docs/telegram-setup-ar.md`](docs/telegram-setup-ar.md), and the Cloudflare Worker code is in [`docs/cloudflare-worker.js`](docs/cloudflare-worker.js).
 
-الملخص:
+Summary:
 
-1. أنشئ بوتًا من `@BotFather`.
-2. انشر Worker وضع فيه `TELEGRAM_BOT_TOKEN` و`PROXY_SECRET`.
-3. من البرنامج: **الإعدادات → الإشعارات**، أدخل Chat IDs ورابط Worker والسر.
-4. اضغط "إرسال رسالة تجريبية".
+1. Create a bot through `@BotFather`.
+2. Deploy the Worker with `TELEGRAM_BOT_TOKEN` and `PROXY_SECRET`.
+3. In the app, go to **Settings → Notifications** and enter the Chat IDs, Worker URL, and proxy secret.
+4. Click **Send test message**.
 
-لا تُرسل رسائل إلا عند تفعيل الحدث المطلوب وعند توفر Chat ID ووسيلة إرسال. الرسائل المحفوظة في Outbox تُرسل عند عودة الإنترنت، وتُعاد المحاولة تلقائيًا.
+Messages are sent only when the relevant event is enabled and a Chat ID and delivery method are configured. Outbox messages are sent when the internet returns and are retried automatically.
 
-## النسخ الاحتياطي والاستعادة
+## Backup and Restore
 
-- **الإعدادات → نسخ احتياطي** لتنزيل ملف JSON كامل.
-- احفظ الملف خارج جهاز الكاشير، مثل Google Drive أو فلاشة.
-- عند الاستعادة، يُنزّل البرنامج نسخة أمان من البيانات الحالية أولًا، ثم يستبدل كل الجداول ببيانات الملف.
-- الاستعادة لا تُدمج البيانات؛ هي استبدال كامل.
-- قد تحتوي النسخة على بيانات العملاء، وسجل الفواتير، وإعدادات Telegram. تعامل معها كملف حساس.
-- تذكير النسخ اليومي يمكن تعطيله أو تأجيله.
+- Use **Settings → Backup** to download a complete JSON file.
+- Keep the file outside the cashier device, such as in Google Drive or on a USB drive.
+- During restore, the app first downloads a safety copy of the current data, then replaces all tables with the backup data.
+- Restore does not merge data; it is a full replacement.
+- Backups may contain customer data, invoice history, and Telegram settings. Treat them as sensitive files.
+- The daily backup reminder can be disabled or postponed.
 
-## التحديث
+## Updates
 
-افحص التحديثات من **الإعدادات → التحديثات**، أو شغّل `update.bat` على Windows.
+Check for updates from **Settings → Updates**, or run `update.bat` on Windows.
 
 `update.bat`:
 
-1. يسأل عن نسخة احتياطية.
-2. يحفظ نسخة من ملفات البرنامج في `backups/`.
-3. ينزّل أحدث Release من GitHub.
-4. يستبدل ملفات البرنامج مع إبقاء قاعدة IndexedDB كما هي.
+1. Asks whether you want to create a backup.
+2. Saves the current application files in `backups/`.
+3. Downloads the latest GitHub Release.
+4. Replaces application files while keeping the IndexedDB database intact.
 
-قبل التحديث، خذ نسخة JSON أيضًا. الإصدارات تُبنى تلقائيًا عند دفع Tag بالشكل `v1.0.0`، ويجب أن يطابق `version.json` رقم الـTag.
+Create a JSON backup before updating as well. Releases are built automatically when a tag such as `v1.0.1` is pushed, and `version.json` must match the tag.
 
-## الخصوصية والأمان
+## Privacy and Security
 
-- كل البيانات محلية. لا يوجد خادم مركزي.
-- PIN المستخدمين يُخزن كـ PBKDF2-HMAC-SHA256 مع Salt. لا يمكن استعادة PIN المنسي من التجزئة؛ يمكن للمدير تعيين PIN جديد.
-- PIN الافتراضي ضعيف، وغيّره قبل الاستخدام الفعلي.
-- لا تضع Bot Token في المستودع. عند استخدام Worker يبقى Token داخل Cloudflare فقط.
-- الوصول إلى الجهاز أو نسخة المتصفح أو ملف JSON كافٍ لرؤية بيانات المغسلة.
-- غيّر عنوان التشغيل أو أضف خادمًا خلفيًا فقط إذا كنت تعرف كيف تنقل قاعدة البيانات.
-- لا تستخدم "Clear site data" في أدوات المتصفح إلا بعد أخذ نسخة احتياطية.
-- Service Worker يعمل على `localhost` فقط، ويُخزّن ملفات الواجهة، وليس قاعدة البيانات.
+- All data is local. There is no central server.
+- User PINs are stored as PBKDF2-HMAC-SHA256 with a salt. A forgotten PIN cannot be recovered from the hash; a manager can assign a new one.
+- The default PINs are weak. Change them before real use.
+- Never commit a bot token to the repository. When using the Worker, the token stays inside Cloudflare.
+- Access to the device, browser profile, or JSON backup is enough to view car-wash data.
+- Change the app origin or add a backend only if you know how to migrate the database.
+- Do not use "Clear site data" in browser tools without a backup.
+- The Service Worker runs on `localhost` only, caches UI files, and never caches the database.
 
-## هيكل المشروع
+## Project Structure
 
 ```text
-index.html               واجهة التطبيق
-css/style.css            التنسيق الرئيسي
-css/print.css            تنسيق الفاتورة الحرارية
-js/app.js                الإقلاع والتوجيه والقفل
-js/db.js                 Dexie/IndexedDB وكل عمليات البيانات
-js/auth.js               المستخدمون وجلسات الدخول
-js/cashier.js            شاشة الكاشير
-js/cart.js               منطق السلة
-js/plate.js              لوحة السيارة
-js/invoices.js           الفواتير
-js/reports.js            التقارير والورديات
-js/expenses.js           المصروفات
-js/customers.js          العملاء والآجل
-js/settings.js           الإعدادات
-js/print.js              طباعة المتصفح
+index.html               Application shell
+css/style.css            Main styles
+css/print.css            Thermal invoice styles
+js/app.js                Bootstrap, routing, and lock screen
+js/db.js                 Dexie/IndexedDB and all data operations
+js/auth.js               Users and login sessions
+js/cashier.js            Cashier screen
+js/cart.js               Cart logic
+js/plate.js              License plate input
+js/invoices.js           Invoices
+js/reports.js            Reports and shifts
+js/expenses.js           Expenses
+js/customers.js          Customers and credit
+js/settings.js           Settings
+js/print.js              Browser printing
 js/escpos.js             ESC/POS
-js/notifications.js      Telegram وOutbox
-js/backup.js             النسخ والاستعادة
-js/updater.js            فحص التحديثات
-js/version.js            الإصدار ومقارنة SemVer
-js/ui.js                 عناصر واجهة مشتركة
-server.js                خادم محلي بدون تبعيات
-tools/serve.py           خادم Python بديل
-tools/update.ps1         تحديث Windows
-data/seed.json           بيانات البداية
-docs/                    دليل Telegram وكود Worker
-icons/                   أيقونات PWA
+js/notifications.js      Telegram and outbox
+js/backup.js             Backup and restore
+js/updater.js            Update checks
+js/version.js            Version and SemVer comparison
+js/ui.js                 Shared UI helpers
+server.js                Dependency-free local server
+tools/serve.py           Python fallback server
+tools/update.ps1         Windows updater
+data/seed.json           Initial data
+docs/                    Telegram guide and Worker code
+icons/                   PWA icons
 ```
 
-## التطوير والإصدارات
+## Development and Releases
 
-لا يوجد build step. عدّل ملفات HTML/CSS/JS مباشرة ثم أعد تحميل الصفحة.
+There is no build step. Edit the HTML/CSS/JS files directly, then reload the page.
 
-قبل أي إصدار:
+Before a release:
 
-1. حدّث `version.json`.
-2. أضف قسمًا جديدًا في `CHANGELOG.md` بنفس رقم الإصدار.
-3. راجع أن `sw.js` يحتوي على كل الملفات المطلوبة.
-4. اختبر تسجيل الدخول، فاتورة، إلغاء، تقرير، نسخة احتياطية، وإشعارًا تجريبيًا.
-5. أنشئ Tag:
+1. Update `version.json`.
+2. Add the new version to `CHANGELOG.md` (the Arabic in-app changelog) and `CHANGELOG.en.md` (English release notes for GitHub).
+3. Confirm that `sw.js` lists every required file.
+4. Test login, invoice creation, cancellation, reports, backup, and a test notification.
+5. Create and push the tag:
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
-GitHub Actions يتحقق من تطابق `version.json` مع الـTag، ثم ينشئ ZIP وRelease.
+GitHub Actions verifies that `version.json` matches the tag, then builds the ZIP and publishes the Release.
 
-## حل المشاكل
+## Troubleshooting
 
-**المنفذ 8080 مشغول:** أغلق النسخة القديمة من نافذة الأوامر، أو أعد تشغيل الجهاز. لا تغيّر المنفذ إلا إذا كنت تعرف أن تغيير العنوان قد يخفي بيانات IndexedDB القديمة.
+**Port 8080 is busy:** close the old command prompt window or restart the machine. Do not change the port unless you understand that a different origin may hide the existing IndexedDB data.
 
-**الصفحة بيضاء:** شغّل `start.bat` ولا تفتح الملف مباشرة. افتح Console في أدوات المتصفح لرؤية الخطأ.
+**Blank page:** run `start.bat` and do not open the file directly. Check the browser console for the error.
 
-**لا توجد بيانات بعد تغيير العنوان:** IndexedDB مرتبط بالأصل (المخطط والمنفذ). استخدم `http://localhost:8080` دائمًا، أو استعد نسخة JSON.
+**Data is missing after changing the address:** IndexedDB is tied to the origin (scheme, host, and port). Always use `http://localhost:8080`, or restore a JSON backup.
 
-**الطابعة لا تطبع:** استخدم Chrome/Edge، تحقق من الاتصال، واطبع صفحة تجريبية من الإعدادات. إذا فشل ESC/POS استخدم طباعة المتصفح.
+**Printer does not print:** use Chrome/Edge, verify the connection, and print a test page from Settings. If ESC/POS fails, use browser printing.
 
-**Telegram لا يعمل:** راجع [`docs/telegram-setup-ar.md`](docs/telegram-setup-ar.md)، وتأكد من Chat ID وسر Worker والإنترنت.
+**Telegram does not work:** review [`docs/telegram-setup-ar.md`](docs/telegram-setup-ar.md), and check the Chat ID, Worker secret, and internet connection.
 
-**النسخة الاحتياطية لا تُستعاد:** تأكد أن الملف JSON من نفس البرنامج وأنه غير تالف، وأنه ليس أحدث من إصدار البرنامج الحالي.
+**Backup will not restore:** confirm that the JSON file came from this application, is not corrupted, and is not newer than the current app version.
 
-## الترخيص
+## License
 
-هذا المشروع أُعد للاستخدام الخاص لصاحب المغسلة. لا توجد ملفات ترخيص مفتوح المصدر مرفقة. راجع مالك المستودع قبل إعادة التوزيع.
+This project was prepared for the private use of the car-wash owner. No open-source license file is included. Contact the repository owner before redistributing it.
