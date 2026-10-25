@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="نظام كاشير مغسلة سيارات مصري يعمل محليًا وبدون إنترنت">
+  <meta name="theme-color" content="#0e7490">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="no-referrer">
+  <title>مغسلة سيارات — الكاشير</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/print.css">
+  <script src="lib/qrcode.js"></script>
+  <script>
+    // file:// cannot load ES modules in most browsers. Explain instead of showing a blank page.
+    if (location.protocol === 'file:') {
+      document.addEventListener('DOMContentLoaded', function () {
+        var w = document.getElementById('file-warning');
+        if (w) w.hidden = false;
+      });
+      setTimeout(function () {
+        var boot = document.getElementById('boot-screen');
+        if (boot && !boot.hidden) {
+          var msg = document.getElementById('boot-file-hint');
+          if (msg) msg.hidden = false;
+        }
+      }, 2500);
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#view">تخطى إلى المحتوى</a>
+
+  <div id="file-warning" class="file-warning" hidden>
+    <div>
+      <strong>إنت فاتح الملف مباشرة (file://).</strong>
+      <span>المتصفح بيمنع تحميل ملفات التطبيق بالطريقة دي، والبيانات ممكن متتحفظش.</span>
+    </div>
+    <div class="file-warning-actions">
+      <a class="btn btn-sm btn-primary" href="http://localhost:8080" target="_blank" rel="noopener">افتح النسخة الصح</a>
+      <button class="btn btn-sm btn-ghost" type="button" onclick="this.closest('.file-warning').hidden=true">تمام</button>
+    </div>
+  </div>
+
+  <div id="boot-screen" class="boot-screen">
+    <div class="boot-logo" aria-hidden="true">
+      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 17h14l1-5-2-5H6L4 12l1 5z"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M5 12h14"/>
+      </svg>
+    </div>
+    <h1>مغسلة سيارات</h1>
+    <p class="boot-status"><span class="spinner"></span> بنجهز الكاشير…</p>
+    <p id="boot-file-hint" class="boot-hint" hidden>
+      لو الشاشة وقفت هنا: اقفل الصفحة وشغّل <b>start.bat</b>، وبعدها افتح
+      <b dir="ltr">http://localhost:8080</b>.
+    </p>
+  </div>
+
+  <div id="lock-screen" class="lock-screen" hidden></div>
+
+  <div id="app-shell" hidden>
+    <header class="app-header">
+      <a class="brand" href="#/cashier" aria-label="الرئيسية">
+        <span class="brand-logo" id="brand-logo"></span>
+        <span class="brand-text">
+          <strong id="brand-name">مغسلة سيارات</strong>
+          <small>نظام الكاشير</small>
+        </span>
+      </a>
+      <nav class="main-nav" id="main-nav" aria-label="أقسام التطبيق"></nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" type="button" aria-label="الوضع الليلي/النهاري" title="الوضع الليلي/النهاري"></button>
+        <button class="icon-btn notify-btn" id="notify-btn" type="button" aria-label="الإشعارات" title="إشعارات تليجرام" hidden>
+          <span class="notify-dot" id="notify-dot"></span>
+        </button>
+        <div class="user-menu">
+          <button class="user-chip" id="user-chip" type="button" aria-haspopup="menu" aria-expanded="false">
+            <span class="avatar avatar-sm" id="user-avatar"></span>
+            <span class="user-chip-text"><strong id="user-name"></strong><small id="user-role"></small></span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown" hidden role="menu">
+            <button type="button" data-action="settings" role="menuitem">الإعدادات</button>
+            <button type="button" data-action="lock" role="menuitem">قفل الشاشة</button>
+            <button type="button" data-action="logout" role="menuitem" class="danger">خروج</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="offline-bar" class="offline-bar" hidden>مفيش نت دلوقتي — كل حاجة شغالة عادي، والإشعارات هتتبعت لما النت يرجع.</div>
+
+    <main id="view" class="view" tabindex="-1"></main>
+
+    <footer class="app-footer">
+      <span>النسخة <b id="version-label">1.0.1</b></span>
+      <span class="dot-sep">•</span>
+      <span>البيانات محفوظة على الجهاز</span>
+      <span class="dot-sep">•</span>
+      <span id="net-label">متصل</span>
+    </footer>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <div id="receipt-wrap" aria-hidden="true">
+    <div id="receipt" class="receipt paper-80"></div>
+  </div>
+
+  <style id="page-style">@page { size: 80mm auto; margin: 0; }</style>
+
+  <noscript>
+    <div class="noscript">التطبيق محتاج JavaScript. فعّله من إعدادات المتصفح وجرّب تاني.</div>
+  </noscript>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

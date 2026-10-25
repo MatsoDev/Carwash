@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify version matches tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./version.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          echo "version.json=$VERSION tag=$TAG"
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "::error::version.json ($VERSION) does not match tag ($TAG). Bump version.json before tagging."
+            exit 1
+          fi
+
+      - name: Build ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          mkdir -p dist
+          zip -r "dist/carwash-pos-${TAG}.zip" . \
+            -x ".git/*" "dist/*" "backups/*" "node_modules/*" "*.zip"
+          ls -lh dist
+
+      - name: Extract release notes from CHANGELOG
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          awk -v ver="$VERSION" '
+            $0 ~ "^## \\[" ver "\\]" { flag=1; next }
+            flag && /^## \[/ { exit }
+            flag { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "Release v$VERSION" > release-notes.md
+          fi
+          { echo "## تحميل وتحديث"; echo ""; echo "نزّل ملف ZIP من الأسفل، أو شغّل \`update.bat\` داخل مجلد التطبيق."; echo ""; echo "**مهم:** اعمل نسخة احتياطية JSON من الإعدادات الأول. البيانات نفسها (IndexedDB) مش بتتأثر بتحديث الملفات."; echo ""; echo "---"; echo ""; cat release-notes.md; } > release-notes-final.md
+          cat release-notes-final.md
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          gh release create "$TAG" "dist/carwash-pos-${TAG}.zip" \
+            --title "Carwash POS ${TAG}" \
+            --notes-file release-notes-final.md \
+            --verify-tag

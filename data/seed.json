@@ -1,0 +1,31 @@
+{
+  "categories": [
+    { "ref": "cars", "name": "سيارات", "icon": "🚗", "order": 1 },
+    { "ref": "tuktuk", "name": "توكتوك", "icon": "🛺", "order": 2 },
+    { "ref": "moto", "name": "موتسيكلات", "icon": "🏍️", "order": 3 }
+  ],
+  "services": [
+    { "categoryRef": "cars", "name": "غسيل سيارات خارجي", "order": 1 },
+    { "categoryRef": "cars", "name": "غسيل سيارات داخلي", "order": 2 },
+    { "categoryRef": "cars", "name": "غسيل سيارات داخلي وخارجي", "order": 3 },
+    { "categoryRef": "cars", "name": "غسيل سيارات داخلي وخارجي مياه فقط", "order": 4 },
+    { "categoryRef": "cars", "name": "غسيل ماتور كيماوي", "order": 5 },
+    { "categoryRef": "cars", "name": "غسيل ماتور جاز", "order": 6 },
+    { "categoryRef": "cars", "name": "غسيل فرش كيماوي", "order": 7 },
+    { "categoryRef": "cars", "name": "غسيل أسفل السيارة جاز", "order": 8 },
+    { "categoryRef": "cars", "name": "غسيل أسفل السيارة كيماوي", "order": 9 },
+
+    { "categoryRef": "tuktuk", "name": "غسيل كامل بره وجوه صابون", "order": 1 },
+    { "categoryRef": "tuktuk", "name": "غسيل بره فقط صابون", "order": 2 },
+    { "categoryRef": "tuktuk", "name": "غسيل مياه فقط", "order": 3 },
+
+    { "categoryRef": "moto", "name": "غسيل كامل", "order": 1 }
+  ],
+  "sizes": [
+    { "name": "صغيرة" },
+    { "name": "ملاكي" },
+    { "name": "ربع نقل" },
+    { "name": "ميكروباص" }
+  ],
+  "workers": []
+}

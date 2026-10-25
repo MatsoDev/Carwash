@@ -1,0 +1,28 @@
+# Local backups and restore snapshots
+carwash-backup-*.json
+carwash-before-restore-*.json
+
+# Secrets and local environment
+.env
+.env.*
+*.pem
+*.key
+
+# Dependencies and tooling
+node_modules/
+.venv/
+__pycache__/
+
+# Test artifacts and browser data
+test-results/
+playwright-report/
+blob-report/
+coverage/
+.pw-profile/
+*.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
